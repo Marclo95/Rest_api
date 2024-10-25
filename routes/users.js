@@ -1,14 +1,18 @@
 const express = require("express")
 const router = express.Router()
-const userArray = [
-	{ id: 1, firstName: "John", lastName: "Doe", role: "admin" },
-	{ id: 2, firstName: "Jane", lastName: "Smith", role: "user" },
-	{ id: 3, firstName: "Alice", lastName: "Johnson", role: "moderator" },
-	{ id: 4, firstName: "Bob", lastName: "Brown", role: "user" },
-	{ id: 5, firstName: "Charlie", lastName: "Davis", role: "admin" },
-]
+
+const db = require("../database")
+
+//GET METHOD
 router.get("/users", (req, res) => {
-    res.json(userArray)
+    db.all('SELECT * FROM users', [], (err, rows) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+        } else {
+          res.json(rows);
+        }
+      });
+    
 })
 
 module.exports = router
